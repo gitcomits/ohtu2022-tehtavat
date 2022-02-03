@@ -1,5 +1,6 @@
 *** Settings ***
 Resource  resource.robot
+Resource  login_resource.robot
 Suite Setup  Open And Configure Browser
 Suite Teardown  Close Browser
 Test Setup  Create User And Go To Register Page
@@ -40,6 +41,31 @@ Register With Nonmatching Password And Password Confirmation
     Submit Credentials
     Register Should Fail With Message  Passwords do not match
     
+Login After Successful Registration
+    Reset
+    Set Username  PlayerTwo
+    Set Password  pLAYERtWO
+    Set Confirm   pLAYERtWO
+    Submit Credentials
+    Register Should Succeed
+    Go To Login Page
+    Set Username  PlayerTwo
+    Set Password  pLAYERtWO
+    Submit Credentials Login 
+    Main Page Should Be Open    
+
+Login After Failed Registration
+    Reset
+    Set Username  PlayerThree
+    Set Password  pLAYER
+    Set Confirm   pLAYER
+    Submit Credentials
+    Register Should Fail With Message  Password length atleast 8
+    Go To Login Page
+    Set Username  PlayerThree
+    Set Password  pLAYER
+    Submit Credentials Login 
+    Login Should Fail With Message  Invalid username or password
 
 *** Keywords ***
 
@@ -61,6 +87,9 @@ Set Confirm
 Submit Credentials
     Click button  Register
 
+Submit Credentials Login 
+    Click button  Login
+
 Register Should Fail With Message
     [Arguments]  ${message}
     Register Page Should Be Open
@@ -70,3 +99,7 @@ Create User And Go To Register Page
     Create User  PlayerOne  pLAYERoNE
     Go To Register Page
     Register Page Should Be Open
+
+Login Should Fail With Message 
+    [Arguments]  ${message}
+    Page Should Contain  ${message}
