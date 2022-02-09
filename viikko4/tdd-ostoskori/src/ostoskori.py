@@ -31,12 +31,13 @@ class Ostoskori:
             self.tuotekori[lisattava.nimi] = Ostos(lisattava)
             
         # lisää tuotteen
-        pass
+        
 
     def poista_tuote(self, poistettava: Tuote):
+        if poistettava.nimi in self.tuotekori:
+            del self.tuotekori[poistettava.nimi]
         # poistaa tuotteen
-        pass
-
+        
     def tyhjenna(self):
         pass
         # tyhjentää ostoskorin
@@ -47,9 +48,5 @@ class Ostoskori:
             L.append(tavara)
         return L
  
-
-
-
-
         # palauttaa listan jossa on korissa olevat ostos-oliot
         # kukin ostos-olio siis kertoo mistä tuotteesta on kyse JA kuinka monta kappaletta kyseistä tuotetta korissa on
