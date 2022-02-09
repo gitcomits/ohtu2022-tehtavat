@@ -95,3 +95,10 @@ class TestOstoskori(unittest.TestCase):
         ostokset = self.kori.ostokset()
         self.assertEqual(len(ostokset), 1)
         # testaa että metodin palauttaman listan pituus 1
+
+    def test_tuotteen_lisaaminen_ja__poistamisen_jalkeen_kori_on_tyhja(self):
+        suklaa = Tuote("Suklaa", 3)
+        self.kori.lisaa_tuote(suklaa)
+        self.kori.poista_tuote(suklaa)
+        ostokset = self.kori.ostokset()
+        self.assertEqual(len(ostokset), 0)
