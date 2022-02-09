@@ -31,7 +31,7 @@ class IntJoukko:
                 self.ljono = [0] * (self.alkioiden_lkm + self.kasvatuskoko)
                 self.kopioi_taulukko(taulukko_old, self.ljono)
 
-            return True 
+            return True  
 
         return False
 
