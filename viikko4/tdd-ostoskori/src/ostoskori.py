@@ -43,8 +43,13 @@ class Ostoskori:
 
     def ostokset(self):
         L = []
-        for tavara in self.tuotekori:
+        for tavara in self.tuotekori.values():
             L.append(tavara)
         return L
+ 
+
+
+
+
         # palauttaa listan jossa on korissa olevat ostos-oliot
         # kukin ostos-olio siis kertoo mistä tuotteesta on kyse JA kuinka monta kappaletta kyseistä tuotetta korissa on
