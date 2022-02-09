@@ -36,14 +36,6 @@ class UserService:
     def validate(self, username, password):
         if not username or not password:
             raise UserInputError("Username and password are required")
-
-        # toteuta loput tarkastukset tänne ja nosta virhe virhetilanteissa
-    #    if len(username) < 3:
-    #        raise AuthenticationError("Username 3 sign minimum")
-
-    #    if not re.match("^[a-z]+$", username):
-    #        raise AuthenticationError("Username contains invalid characters")
-    
     
         if len(username) >= 3:
             if re.match("!^[a-z]+$", username):
@@ -60,6 +52,3 @@ class UserService:
         else:
             raise AuthenticationError("Password length atleast 8")
         
-        #    raise AuthenticationError("Password length atleast 8")
-        return["Registration OK"]
-         
