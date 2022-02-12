@@ -1,7 +1,6 @@
 from enum import Enum
 from tkinter import ttk, constants, StringVar
 
-
 class Komento(Enum):
     SUMMA = 1
     EROTUS = 2
@@ -10,13 +9,23 @@ class Komento(Enum):
 
 
 class Kayttoliittyma:
-    def __init__(self, sovellus, root):
-        self._sovellus = sovellus
+    def __init__(self, sovelluslogiikka, root):
+        self._sovelluslogiikka = sovelluslogiikka
         self._root = root
+
+        self._komennot = {
+            Komento.SUMMA: Summa(sovelluslogiikka, self._lue_syote),
+            Komento.EROTUS: Erotus(sovelluslogiikka, self._lue_syote),
+            Komento.NOLLAUS: Nollaus(sovelluslogiikka, self._lue_syote),
+            Komento.KUMOA: Kumoa(sovelluslogiikka, self._lue_syote)
+        }
+
+    def _lue_syote(self):
+        return self._syote_kentta.get()
 
     def kaynnista(self):
         self._tulos_var = StringVar()
-        self._tulos_var.set(self._sovellus.tulos)
+        self._tulos_var.set(self._sovelluslogiikka.tulos)
         self._syote_kentta = ttk.Entry(master=self._root)
 
         tulos_teksti = ttk.Label(textvariable=self._tulos_var)
@@ -61,22 +70,55 @@ class Kayttoliittyma:
             arvo = int(self._syote_kentta.get())
         except Exception:
             pass
-
-        if komento == Komento.SUMMA:
-            self._sovellus.plus(arvo)
-        elif komento == Komento.EROTUS:
-            self._sovellus.miinus(arvo)
-        elif komento == Komento.NOLLAUS:
-            self._sovellus.nollaa()
-        elif komento == Komento.KUMOA:
-            pass
+    
+        if komento in self._komennot:
+            tapahtuma = self._komennot[komento]
+            tapahtuma.tulos()
 
         self._kumoa_painike["state"] = constants.NORMAL
 
-        if self._sovellus.tulos == 0:
+        if self._sovelluslogiikka.tulos == 0:
             self._nollaus_painike["state"] = constants.DISABLED
         else:
             self._nollaus_painike["state"] = constants.NORMAL
 
         self._syote_kentta.delete(0, constants.END)
-        self._tulos_var.set(self._sovellus.tulos)
+        self._tulos_var.set(self._sovelluslogiikka.tulos)
+
+
+class Summa:
+    def __init__(self, sovelluslokiikka, syote):
+        self.sovelluslogiikka = sovelluslokiikka
+        self.syote = syote
+
+    def tulos(self):
+        try:
+            i = int(self.syote())
+        except Exception:
+            i = 0
+        self.sovelluslogiikka.plus(i)
+
+class Erotus:
+    def __init__(self, sovelluslokiikka, syote):
+        self.sovelluslogiikka = sovelluslokiikka
+        self.syote = syote
+
+    def tulos(self):
+        try:
+            i = int(self.syote())
+        except Exception:
+            i = 0
+        self.sovelluslogiikka.miinus(i)
+
+class Nollaus:
+    def __init__(self, sovelluslokiikka, syote):
+        self.sovelluslogiikka = sovelluslokiikka
+        self.syote = syote
+
+    def tulos(self):
+        self.sovelluslogiikka.nollaa()
+
+class Kumoa:
+    def __init__(self, sovelluslokiikka, syote):
+        self.sovelluslogiikka = sovelluslokiikka
+        self.syote = syote
