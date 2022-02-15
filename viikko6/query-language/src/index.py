@@ -1,6 +1,6 @@
 from statistics import Statistics
 from player_reader import PlayerReader
-from matchers import And, HasAtLeast, PlaysIn, Not, HasFewerThan, Or
+from matchers import And, HasAtLeast, PlaysIn, Not, HasFewerThan, Or, QueryBuilder
 
 def main():
     url = "https://nhlstatisticsforohtu.herokuapp.com/players.txt"
@@ -13,9 +13,13 @@ def main():
 #        PlaysIn("PHI")
 #    )
 
-    matcher = Or(
-        HasAtLeast(30, "goals"),
-        HasAtLeast(50, "assists")
+    query = QueryBuilder()
+    matcher = (
+        query  
+        .playsIn("NYR")  
+        .hasAtLeast(5, "goals")  
+        .hasFewerThan(10, "goals")  
+        .build()
     )
 
 
