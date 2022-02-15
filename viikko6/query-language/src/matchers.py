@@ -82,3 +82,5 @@ class QueryBuilder:
     def build(self):
         return self.matchers
     
+    def oneOf(self, m1, m2):
+        return QueryBuilder(Or(m1, m2))
